@@ -1,5 +1,6 @@
 var canvas = document.getElementById("canvas");
 var effect = document.getElementById("effect");
+
 canvas.tabIndex = 0;
 canvas.focus();
 var ctx = canvas.getContext("2d");
@@ -71,6 +72,8 @@ document.addEventListener("game_created", function(e) {
 
 document.addEventListener("game_ready", function(e) {
 	gb = new Gameboard();
+	var display = document.querySelector('#time');
+	gb.startTimer(display);
 });
 
 document.addEventListener('disconnect', function(e) {
@@ -102,7 +105,7 @@ function Gameboard()
 				if(j < 0) {
 					j = 0;
 				}
-				else if(j >= tile.length) {
+				else if(j >= tile[i].length) {
 					j = (tile.length - 1);
 				}
 
@@ -220,6 +223,32 @@ function Gameboard()
 	this.stop = function() {
 		clearInterval(s);
 	}
+
+	this.startTimer = function(display) {
+	    var timer = 60, minutes, seconds;
+	    setInterval(function () {
+	        minutes = parseInt(timer / 60, 10);
+	        seconds = parseInt(timer % 60, 10);
+
+	        minutes = minutes < 10 ? "0" + minutes : minutes;
+	        seconds = seconds < 10 ? "0" + seconds : seconds;
+	        console.log(minutes);
+	        console.log(seconds);
+	        display.textContent = minutes + ":" + seconds;
+
+	        if (--timer < 0) {
+	            timer = 60;
+	        }
+	    }, 1000);
+	}
+
+	/*
+	window.onload = function () {
+	    var fiveMinutes = 60 * 5,
+	        display = document.querySelector('#time');
+	    startTimer(fiveMinutes, display);
+	};
+	*/
 }
 
 //left = 37, right = 39, up = 38, down = 40
