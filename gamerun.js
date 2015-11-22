@@ -106,6 +106,7 @@ hard.addEventListener('click', function() {
   canvas.focus();
 });
 
+
 function Gameboard()
 {
   console.log('creating gameboard');
@@ -185,48 +186,46 @@ function Gameboard()
 	}
 
 	function gameOver() {
-
-	    console.log(tile[player.y][player.x]);
-	    console.log(tile[player2.y][player2.x]);
-
-	    console.log(tile[player.y][player.x] == '$');
-	    console.log(tile[player2.y][player2.x] == '$');
-
 		if((tile[player.y][player.x] == '$') && (tile[player2.y][player2.x] == '$')) {
-			console.log("Stop command: game over.");
+      player = { x: 1, y: 1 };
+      player2 = { x: 1, y: 1 };
+
 			server.send("game.stop", {});
-		    gb.stop();
-		    menu.style.display = 'block';
+      gb.stop();
+      menu.style.display = 'block';
+
+      document.removeEventListener('coordinates', coordinatesListener);
+      canvas.addEventListener('keydown', keyListener);
 		}
 		console.log(player.x + " " + player.y + " " + player2.x + " " + player2.y);
 	}
 
-	document.addEventListener('coordinates', function(e) {
-		//console.log(e.detail.message);
-		player2.x = e.detail.message.x;
-		player2.y = e.detail.message.y;
-		gameOver();
-	});
+  function coordinatesListener(e) {
+    //console.log(e.detail.message);
+    player2.x = e.detail.message.x;
+    player2.y = e.detail.message.y;
+    gameOver();
+  }
 
-	canvas.addEventListener("keydown", function(e){
+  function keyListener(e) {
+    //player
 
-		//player
+    if(e.keyCode == 37) {
+      moveLeft(player);
+    }
+    if(e.keyCode == 39) {
+      moveRight(player);
+    }
+    if(e.keyCode == 38) {
+      moveDown(player);
+    }
+    if(e.keyCode == 40) {
+      moveUp(player);
+    }
+  }
 
-		if(e.keyCode == 37) {
-			moveLeft(player);
-		}
-		if(e.keyCode == 39) {
-			moveRight(player);
-		}
-		if(e.keyCode == 38) {
-			moveDown(player);
-		}
-		if(e.keyCode == 40) {
-			moveUp(player);
-		}
-
-
-	});
+	document.addEventListener('coordinates', coordinatesListener);
+	canvas.addEventListener("keydown", keyListener);
 
 	this.stop = function() {
     gblock = false;
@@ -234,21 +233,21 @@ function Gameboard()
 	}
 
 	this.startTimer = function(display) {
-	    var timer = 60, minutes, seconds;
-	    setInterval(function () {
-	        minutes = parseInt(timer / 60, 10);
-	        seconds = parseInt(timer % 60, 10);
+    var timer = 60, minutes, seconds;
+    setInterval(function () {
+      minutes = parseInt(timer / 60, 10);
+      seconds = parseInt(timer % 60, 10);
 
-	        minutes = minutes < 10 ? "0" + minutes : minutes;
-	        seconds = seconds < 10 ? "0" + seconds : seconds;
-	        console.log(minutes);
-	        console.log(seconds);
-	        display.textContent = minutes + ":" + seconds;
+      minutes = minutes < 10 ? "0" + minutes : minutes;
+      seconds = seconds < 10 ? "0" + seconds : seconds;
+      console.log(minutes);
+      console.log(seconds);
+      display.textContent = minutes + ":" + seconds;
 
-	        if (--timer < 0) {
-	            timer = 60;
-	        }
-	    }, 1000);
+      if (--timer < 0) {
+          timer = 60;
+      }
+    }, 1000);
 	}
 
 	/*
