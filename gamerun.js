@@ -20,7 +20,7 @@ wallTile.src = 'images/wall.png'
 var finTile = new Image();
 finTile.src = 'images/fin.png'
 
-var tile = 
+var tile =
 [
 ['.','.','.','#','.','.','.','.','.','.','.','#','.','.','.','.','.','.','.','#','.','.','.','.','.','.','.','#','.','.','.','.'],
 ['.','.','.','#','.','.','.','.','.','.','.','#','.','.','.','.','.','.','.','#','.','.','.','.','.','.','.','#','.','.','.','.'],
@@ -56,8 +56,8 @@ var tile =
 ['.','.','.','#','.','.','.','.','.','.','.','#','.','.','.','.','.','.','.','#','.','.','.','.','.','.','.','#','.','.','.','.']
 ];
 
-var player = {x: 0, y: 0};
-var player2 = {x: (tile.length - 1), y: (tile.length - 1)};
+var player = {x: 1, y: 1};
+var player2 = {x: (tile.length - 2), y: (tile.length - 2)};
 var offx = 0;
 var offy = 0;
 var gb;
@@ -71,7 +71,7 @@ document.addEventListener("game_created", function(e) {
 });
 
 document.addEventListener("game_ready", function(e) {
-  //tile = e.detail.message.maze;
+  tile = e.detail.message.maze;
   if (!gblock) {
     gb = new Gameboard();
   }
@@ -90,7 +90,7 @@ function Gameboard()
   gblock = true;
 	var gb = this;
 	var s = setInterval(function() {
-		
+
 		ctx.fillStyle = "#0067db";
 		ctx.fillRect(0,0,canvas.width,canvas.height);
 
@@ -174,7 +174,7 @@ function Gameboard()
 	});
 
 	canvas.addEventListener("keydown", function(e){
-		
+
 		//player
 
 		if(e.keyCode == 37) {
@@ -189,8 +189,8 @@ function Gameboard()
 		if(e.keyCode == 40) {
 			moveUp(player);
 		}
-		
-		
+
+
 		/*player 2
 
 		if(e.keyCode == 65) {
