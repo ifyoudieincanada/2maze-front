@@ -174,6 +174,12 @@ function moveUp(player) {
 	}
 }
 
+function gameOver() {
+	if((tile[player.x][player.y] == '$') && (tile[player2.x][player2.y] == '$')) {
+		
+	}
+}
+
 canvas.addEventListener("keydown", function(e){
 	
 	//player
@@ -207,30 +213,8 @@ canvas.addEventListener("keydown", function(e){
 		moveUp(player2);
 	}
 
-});
 
-canvas.addEventListener("keyup", function(e){
-	console.log("YOU");
-	if(dirx !== 0) {
-		if(e.keyCode == 37) {
-			dirpx = dirx;
-			dirx = 0;
-		}
-		if(e.keyCode == 39) {
-			dirpx = dirx;
-			dirx = 0;
-		}	
-	}
-	if(diry !== 0) {
-		if(e.keyCode == 38) {
-			dirpy = diry;
-			diry = 0;
-		}
-		if(e.keyCode == 40) {
-			dirpy = diry;
-			diry = 0;
-		}
-	}
+
 });
 
 //left = 37, right = 39, up = 38, down = 40

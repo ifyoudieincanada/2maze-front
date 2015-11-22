@@ -9,18 +9,73 @@
 			}
 			canvas
 			{
-		    padding: 0;
-		    margin: auto;
-		    display: block;
-		    position: absolute;
-		    top: 0;
-		    bottom: 0;
-		    left: 0;
-		    right: 0;
+			    padding: 0;
+			    margin: auto;
+			    display: block;
+			    position: absolute;
+			    top: 0;
+			    bottom: 0;
+			    left: 0;
+			    right: 0;
+			}
+			.container
+			{
+				margin: 15%;
+			}
+			#menu
+			{
+				z-index: 15;
+				width: 256;
+				height: 384;
+				margin: auto;
+				position: relative;
+				display: block;
+				background-color: #ccc;
+			}
+			.difficulty
+			{
+				display: block;
+				opacity: 1;
+				position: relative;
+				font-family: sans-serif;
+				font-size: 32px;
+				width: 128px;
+				height: 48px;
+				margin: 0 auto;
+				background-color: #fff
+			}
+			.difficulty p
+			{
+				color: #333
+			}
+			#easyc
+			{
+				padding: 1em;
+			}
+			#mediumc
+			{
+				padding: 1em;
+			}
+			#hardc
+			{
+				padding: 1em;
 			}
 		</style>
 	</head>
 	<body>
+	  <div class = "container">
+	    <div id = "menu">
+	      <div id = "easyc">
+	      	<div class = "difficulty" id = "easy" style = "background-color: #0f0"><p>Easy</p></div>
+	      </div>
+	      <div id = "mediumc">
+	  	    <div class = "difficulty" id = "medium" style = "background-color: #ff0"><p>Medium</p></div>
+	      </div>
+	      <div id = "hardc">
+	  	    <div class = "difficulty" id = "hard" style = "background-color: #f00"><p>Hard</p></div>
+	      </div>
+	    </div>
+	  </div>
 	  <canvas id = "canvas" width="1024" height="1024" style="z-index: 1; border:1px solid #000000;">Get a better browser</canvas>
 	  <canvas id = "effect" width="1024" height="1024" style="z-index: 10;" tabIndex="-1">Get a better browser</canvas>
 	  <script src="gamerun.js"></script>
