@@ -71,6 +71,7 @@ document.addEventListener("game_created", function(e) {
 });
 
 document.addEventListener("game_ready", function(e) {
+  tile = e.detail.message.maze;
 	gb = new Gameboard();
 	var display = document.querySelector('#time');
 	gb.startTimer(display);
