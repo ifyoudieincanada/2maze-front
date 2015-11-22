@@ -9,7 +9,7 @@ var playerPic = new Image();
 playerPic.src = 'images/player-white.png'
 
 var player2Pic = new Image();
-player2Pic.src = 'images/player-pink.png'
+player2Pic.src = 'images/player-green.png'
 
 var pathTile = new Image();
 pathTile.src = 'images/path.png'
@@ -17,8 +17,8 @@ pathTile.src = 'images/path.png'
 var wallTile = new Image();
 wallTile.src = 'images/wall.png'
 
-var bg = new Image();
-bg.src = 'images/backdrop.png'
+var finTile = new Image();
+finTile.src = 'images/fin.png'
 
 var tile = 
 [
@@ -116,10 +116,11 @@ var s = setInterval(function() {
 				ctx.drawImage(wallTile, (((canvas.width/2) - player.x*128 + j*128)- 64), ((canvas.height/2) - player.y*128 + i*128 - 64), 128, 128);
 			}
 			if(tile[i][j] == '$') {
-				ctx.fillStyle = "#8585dd";
-				ctx.fillRect((((canvas.width/2) - player.x*128 + j*128)- 64), ((canvas.height/2) - player.y*128 + i*128 - 64), 128, 128);
-				ctx.strokeStyle = "#ffffff";
-				ctx.strokeRect((((canvas.width/2) - player.x*128 + j*128)- 64), ((canvas.height/2) - player.y*128 + i*128 - 64), 128, 128);
+				//ctx.fillStyle = "#8585dd";
+				//ctx.fillRect((((canvas.width/2) - player.x*128 + j*128)- 64), ((canvas.height/2) - player.y*128 + i*128 - 64), 128, 128);
+				//ctx.strokeStyle = "#ffffff";
+				//ctx.strokeRect((((canvas.width/2) - player.x*128 + j*128)- 64), ((canvas.height/2) - player.y*128 + i*128 - 64), 128, 128);
+				ctx.drawImage(finTile, (((canvas.width/2) - player.x*128 + j*128)- 64), ((canvas.height/2) - player.y*128 + i*128 - 64), 128, 128);
 			}
 
 						// Center the player 	Player size   Tile offset	32 is for center offset
@@ -134,7 +135,7 @@ var s = setInterval(function() {
 	ctx.drawImage(playerPic, ((canvas.width/2) - 64), ((canvas.height/2) - 64), 128, 128);
 
 			// Center the player 	Player2 size   Player offset	64 is for center offset
-	ctx.fillRect(((canvas.width/2) + player2.x*128 - (player.x*128) - 64), ((canvas.height/2) + player2.y*128 - (player.y*128) - 64), 128, 128);
+	ctx.drawImage(player2Pic, ((canvas.width/2) + player2.x*128 - (player.x*128) - 64), ((canvas.height/2) + player2.y*128 - (player.y*128) - 64), 128, 128);
 
 }, 10);
 
