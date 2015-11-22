@@ -1,5 +1,6 @@
 var canvas = document.getElementById("canvas");
 var effect = document.getElementById("effect");
+
 canvas.tabIndex = 0;
 canvas.focus();
 var ctx = canvas.getContext("2d");
@@ -70,10 +71,9 @@ document.addEventListener("game_created", function(e) {
 });
 
 document.addEventListener("game_ready", function(e) {
-  tile = e.detail.message.maze;
-  console.log('y: ' + tile.length);
-  console.log('x: ' + tile[0].length);
-  player2 = {x: (tile.length - 2), y: (tile.length - 2)};
+	gb = new Gameboard();
+	var display = document.querySelector('#time');
+	gb.startTimer(display);
   if (!gblock) {
     gb = new Gameboard();
   }
@@ -119,7 +119,6 @@ function Gameboard()
 
     var lower_y = player.y - 5 < 0 ? 0 : player.y - 5;
     var upper_y = player.y + 5 > tile.length ? tile.length - 1 : player.y + 5;
-
     var lower_x = player.x - 5 < 0 ? 0 : player.x - 5;
     var upper_x = player.x + 5 > tile[0].length ? tile[0].length - 1 : player.x + 5;
 
@@ -219,29 +218,38 @@ function Gameboard()
 		}
 
 
-		/*player 2
-
-		if(e.keyCode == 65) {
-			moveLeft(player2);
-		}
-		if(e.keyCode == 68) {
-			moveRight(player2);
-		}
-		if(e.keyCode == 87) {
-			moveDown(player2);
-		}
-		if(e.keyCode == 83) {
-			moveUp(player2);
-		}
-		*/
-
-
 	});
 
 	this.stop = function() {
     gblock = false;
 		clearInterval(s);
 	}
+
+	this.startTimer = function(display) {
+	    var timer = 60, minutes, seconds;
+	    setInterval(function () {
+	        minutes = parseInt(timer / 60, 10);
+	        seconds = parseInt(timer % 60, 10);
+
+	        minutes = minutes < 10 ? "0" + minutes : minutes;
+	        seconds = seconds < 10 ? "0" + seconds : seconds;
+	        console.log(minutes);
+	        console.log(seconds);
+	        display.textContent = minutes + ":" + seconds;
+
+	        if (--timer < 0) {
+	            timer = 60;
+	        }
+	    }, 1000);
+	}
+
+	/*
+	window.onload = function () {
+	    var fiveMinutes = 60 * 5,
+	        display = document.querySelector('#time');
+	    startTimer(fiveMinutes, display);
+	};
+	*/
 }
 
 //left = 37, right = 39, up = 38, down = 40
