@@ -88,10 +88,24 @@ function Gameboard()
 		ctx.fillStyle = "#0067db";
 		ctx.fillRect(0,0,canvas.width,canvas.height);
 
-		for(i = 0; i < tile.length; i++)
+		for(i = player.y - 5; i < player.y + 5; i++)
 		{
-			for(j = 0; j < tile[i].length; j++)
+			if(i < 0) {
+				i = 0;
+			}
+			else if(i >= tile.length) {
+				i = (tile.length - 1);
+			}
+
+			for(j = player.x - 5; j < player.x + 5; j++)
 			{
+				if(j < 0) {
+					j = 0;
+				}
+				else if(j >= tile.length) {
+					j = (tile.length - 1);
+				}
+
 				if(tile[i][j] == '.') {
 					ctx.drawImage(pathTile, (((canvas.width/2) - player.x*128 + j*128)- 64), ((canvas.height/2) - player.y*128 + i*128 - 64), 128, 128);
 				}
@@ -104,11 +118,13 @@ function Gameboard()
 			}
 		}
 
-				// Center the player 	64 is for center offset
+								// Center the player 	64 is for center offset
 		ctx.drawImage(playerPic, ((canvas.width/2) - 64), ((canvas.height/2) - 64), 128, 128);
 
-				// Center the player 	Player2 size   Player offset				64 is for center offset
-		ctx.drawImage(player2Pic, ((canvas.width/2) + player2.x*128 - (player.x*128) - 64), ((canvas.height/2) + player2.y*128 - (player.y*128) - 64), 128, 128);
+								// Center the player 	Player2 size   Player offset				64 is for center offset
+		if((Math.abs(player.x - player2.x) < 11) && (Math.abs(player.y - player2.y) < 11)) {
+			ctx.drawImage(player2Pic, ((canvas.width/2) + player2.x*128 - (player.x*128) - 64), ((canvas.height/2) + player2.y*128 - (player.y*128) - 64), 128, 128);
+		}
 
 	}, 10);
 
