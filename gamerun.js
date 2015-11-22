@@ -1,10 +1,8 @@
 var canvas = document.getElementById("canvas");
-var effect = document.getElementById("effect");
 
 canvas.tabIndex = 0;
 canvas.focus();
 var ctx = canvas.getContext("2d");
-var cte = effect.getContext("2d");
 
 var playerPic = new Image();
 playerPic.src = 'images/player-white.png'
@@ -186,15 +184,17 @@ function Gameboard()
 	}
 
 	function gameOver() {
-    console.log(tile[player.y][player.x]);
-    console.log(tile[player2.y][player2.x]);
 
-    console.log(tile[player.y][player.x] == '$');
-    console.log(tile[player2.y][player2.x] == '$');
+	    console.log(tile[player.y][player.x]);
+	    console.log(tile[player2.y][player2.x]);
+
+	    console.log(tile[player.y][player.x] == '$');
+	    console.log(tile[player2.y][player2.x] == '$');
 
 		if((tile[player.y][player.x] == '$') && (tile[player2.y][player2.x] == '$')) {
 			console.log("Stop command: game over.");
 			server.send("game.stop", {});
+			gb.stop();
 		}
 		console.log(player.x + " " + player.y + " " + player2.x + " " + player2.y);
 	}
