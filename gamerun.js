@@ -150,12 +150,11 @@ function Gameboard()
 	}
 
 	function gameOver() {
-		if((tile[player.x][player.y] == '$') && (tile[player2.x][player2.y] == '$')) {
+		if((tile[player.y][player.x] == '$') && (tile[player2.y][player2.x] == '$')) {
 			console.log("game over.");
 			server.send("game.stop", {});
-			gb.stop();
 		}
-		console.log(tile[player.x][player.y] + " " + tile[player2.x][player2.y]);
+		console.log(player.x + " " + player.y + " " + player2.x + " " + player2.y);
 	}
 
 	document.addEventListener('coordinates', function(e) {
