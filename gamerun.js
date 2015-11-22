@@ -70,6 +70,7 @@ document.addEventListener("game_created", function(e) {
 });
 
 document.addEventListener("game_ready", function(e) {
+  tile = e.details.message.maze;
 	gb = new Gameboard();
 });
 
