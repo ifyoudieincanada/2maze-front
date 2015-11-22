@@ -61,6 +61,7 @@ var player2 = {x: (tile.length - 1), y: (tile.length - 1)};
 var offx = 0;
 var offy = 0;
 var gb;
+var gblock = false;
 
 var server = new TwoSocket("ws://localhost:8080");
 
@@ -70,8 +71,10 @@ document.addEventListener("game_created", function(e) {
 });
 
 document.addEventListener("game_ready", function(e) {
-  tile = e.details.message.maze;
-	gb = new Gameboard();
+  //tile = e.detail.message.maze;
+  if (!gblock) {
+    gb = new Gameboard();
+  }
 });
 
 document.addEventListener('disconnect', function(e) {
@@ -83,16 +86,21 @@ server.send("game.mode", {mode:0});
 
 function Gameboard()
 {
+  console.log('creating gameboard');
+  gblock = true;
 	var gb = this;
 	var s = setInterval(function() {
 		
 		ctx.fillStyle = "#0067db";
 		ctx.fillRect(0,0,canvas.width,canvas.height);
 
+    console.log(tile.length*tile[0].length)
+
 		for(i = 0; i < tile.length; i++)
 		{
 			for(j = 0; j < tile[i].length; j++)
 			{
+        console.log('building board');
 				if(tile[i][j] == '.') {
 					ctx.drawImage(pathTile, (((canvas.width/2) - player.x*128 + j*128)- 64), ((canvas.height/2) - player.y*128 + i*128 - 64), 128, 128);
 				}
@@ -135,7 +143,7 @@ function Gameboard()
 	function moveDown(player) {
 		if((player.y > 0) && (tile[player.y - 1][player.x] != '#'))
 		{
-			player.y--;
+			player.y--
 			server.send("game.coordinates", player);
 			gameOver();
 		}
@@ -144,7 +152,7 @@ function Gameboard()
 	function moveUp(player) {
 		if((player.y < (tile.length - 1)) && (tile[player.y + 1][player.x] != '#'))
 		{
-			player.y++;
+			player.y++
 			server.send("game.coordinates", player);
 			gameOver();
 		}
@@ -204,6 +212,7 @@ function Gameboard()
 	});
 
 	this.stop = function() {
+    gblock = false;
 		clearInterval(s);
 	}
 }
