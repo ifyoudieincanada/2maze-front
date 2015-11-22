@@ -65,13 +65,15 @@ var gblock = false;
 
 var server = new TwoSocket("ws://localhost:8080");
 
-
 document.addEventListener("game_created", function(e) {
 	alert("Awating connection.");
 });
 
 document.addEventListener("game_ready", function(e) {
   tile = e.detail.message.maze;
+  console.log('y: ' + tile.length);
+  console.log('x: ' + tile[0].length);
+  player2 = {x: (tile.length - 2), y: (tile.length - 2)};
   if (!gblock) {
     gb = new Gameboard();
   }
@@ -82,7 +84,21 @@ document.addEventListener('disconnect', function(e) {
     gb.stop();
 });
 
-server.send("game.mode", {mode:0});
+var easy   = document.getElementById('easyc');
+var medium = document.getElementById('mediumc');
+var hard   = document.getElementById('hardc');
+
+easy.addEventListener('click', function() {
+  server.send("game.mode", { mode: 0 });
+});
+
+medium.addEventListener('click', function() {
+  server.send("game.mode", { mode: 1 });
+});
+
+hard.addEventListener('click', function() {
+  server.send("game.mode", { mode: 2 });
+});
 
 function Gameboard()
 {
@@ -94,13 +110,16 @@ function Gameboard()
 		ctx.fillStyle = "#0067db";
 		ctx.fillRect(0,0,canvas.width,canvas.height);
 
-    console.log(tile.length*tile[0].length)
+    var lower_y = player.y - 5 < 0 ? 0 : player.y - 5;
+    var upper_y = player.y + 5 > tile.length ? tile.length - 1 : player.y + 5;
 
-		for(i = 0; i < tile.length; i++)
+    var lower_x = player.x - 5 < 0 ? 0 : player.x - 5;
+    var upper_x = player.x + 5 > tile[0].length ? tile[0].length - 1 : player.x + 5;
+
+		for(i = lower_y; i < upper_y; i++)
 		{
-			for(j = 0; j < tile[i].length; j++)
+			for(j = lower_x; j < upper_x; j++)
 			{
-        console.log('building board');
 				if(tile[i][j] == '.') {
 					ctx.drawImage(pathTile, (((canvas.width/2) - player.x*128 + j*128)- 64), ((canvas.height/2) - player.y*128 + i*128 - 64), 128, 128);
 				}
@@ -113,11 +132,13 @@ function Gameboard()
 			}
 		}
 
-				// Center the player 	64 is for center offset
+								// Center the player 	64 is for center offset
 		ctx.drawImage(playerPic, ((canvas.width/2) - 64), ((canvas.height/2) - 64), 128, 128);
 
-				// Center the player 	Player2 size   Player offset				64 is for center offset
-		ctx.drawImage(player2Pic, ((canvas.width/2) + player2.x*128 - (player.x*128) - 64), ((canvas.height/2) + player2.y*128 - (player.y*128) - 64), 128, 128);
+								// Center the player 	Player2 size   Player offset				64 is for center offset
+		if((Math.abs(player.x - player2.x) < 11) && (Math.abs(player.y - player2.y) < 11)) {
+			ctx.drawImage(player2Pic, ((canvas.width/2) + player2.x*128 - (player.x*128) - 64), ((canvas.height/2) + player2.y*128 - (player.y*128) - 64), 128, 128);
+		}
 
 	}, 10);
 
