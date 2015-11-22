@@ -61,18 +61,18 @@ var offx = 0;
 var offy = 0;
 var gb;
 var gblock = false;
+var gtime = 0;
 
 var server = new TwoSocket("ws://localhost:8080");
-
 document.addEventListener("game_created", function(e) {
-	alert("Awating connection.");
+alert("Awating connection.");
 });
 
 document.addEventListener("game_ready", function(e) {
   tile = e.detail.message.maze;
 	gb = new Gameboard();
 	var display = document.querySelector('#time');
-	gb.startTimer(display);
+	gb.startTimer(gtime, display);
   if (!gblock) {
     gb = new Gameboard();
   }
@@ -90,18 +90,21 @@ var hard   = document.getElementById('hardc');
 
 easy.addEventListener('click', function() {
   server.send("game.mode", { mode: 0 });
+  gtime = 60;
   menu.style.display = 'none';
   canvas.focus();
 });
 
 medium.addEventListener('click', function() {
   server.send("game.mode", { mode: 1 });
+  gtime = 120;
   menu.style.display = 'none';
   canvas.focus();
 });
 
 hard.addEventListener('click', function() {
   server.send("game.mode", { mode: 2 });
+  gtime = 150;
   menu.style.display = 'none';
   canvas.focus();
 });
@@ -111,6 +114,7 @@ function Gameboard()
   console.log('creating gameboard');
   gblock = true;
 	var gb = this;
+	var t;
 	var s = setInterval(function() {
 
 		ctx.fillStyle = "#0067db";
@@ -231,22 +235,26 @@ function Gameboard()
 	this.stop = function() {
     gblock = false;
 		clearInterval(s);
+		clearInterval(t);
 	}
 
-	this.startTimer = function(display) {
-	    var timer = 60, minutes, seconds;
-	    setInterval(function () {
+	this.startTimer = function(gtime, display) {
+	    var timer = gtime, minutes, seconds;
+	    t = setInterval(function () {
 	        minutes = parseInt(timer / 60, 10);
 	        seconds = parseInt(timer % 60, 10);
 
 	        minutes = minutes < 10 ? "0" + minutes : minutes;
 	        seconds = seconds < 10 ? "0" + seconds : seconds;
-	        console.log(minutes);
-	        console.log(seconds);
+
 	        display.textContent = minutes + ":" + seconds;
 
 	        if (--timer < 0) {
-	            timer = 60;
+				console.log("Stop command: game over.");
+				server.send("game.stop", {});
+			    gb.stop();
+			    menu.style.display = 'block';
+	            return;
 	        }
 	    }, 1000);
 	}
