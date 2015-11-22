@@ -135,7 +135,7 @@ function Gameboard()
 	function moveDown(player) {
 		if((player.y > 0) && (tile[player.y - 1][player.x] != '#'))
 		{
-			player.y++;
+			player.y--;
 			server.send("game.coordinates", player);
 			gameOver();
 		}
@@ -144,7 +144,7 @@ function Gameboard()
 	function moveUp(player) {
 		if((player.y < (tile.length - 1)) && (tile[player.y + 1][player.x] != '#'))
 		{
-			player.y--;
+			player.y++;
 			server.send("game.coordinates", player);
 			gameOver();
 		}
