@@ -82,41 +82,15 @@ var s = setInterval(function() {
 			if(tile[i][j] == '$')
 				ctx.strokeStyle = "#ffff00";
 
-			ctx.strokeRect(j*64, i*64, 64, 64);
-		}
-	}
-
-
-	//player movement code
-	if(tile[player.y][player.x + dirx] != '#')
-	{
-		offx += dirx * 4;
-		if(offx % 64 === 0) {
-			player.x += offx / 64;
-			offx = 0;
-		}
-		else if(dirx === 0) {
-			offx += dirpx * 4;
-		}
-	}
-	
-	if(tile[player.y + diry][player.x] != '#')
-	{
-		offy += diry * 4;
-		if(offy % 64 === 0) {
-			player.y += offy / 64;
-			offy = 0;
-		}
-		else if(diry === 0) {
-			offy += dirpy * 4;
+			ctx.strokeRect((((canvas.width/2) - player.x*64 + j*64)- 32), ((canvas.height/2) - player.y*64 + i*64 - 32), 64, 64);
 		}
 	}
 	
 
 	ctx.fillStyle = "#ffffff";
-	ctx.fillRect(player.x*64 + offx, player.y*64 + offy, 64, 64);
+	ctx.fillRect((-32 + (canvas.width/2)), (-32 + (canvas.height/2)), 64, 64);
 	
-	ctx.fillRect(player2.x*64, player2.y*64, 64, 64);
+	ctx.fillRect(((canvas.width/2) + player2.x*64 - (player.x*64) - 32), ((canvas.height/2) + player2.y*64 - (player.y*64) - 32), 64, 64);
 }, 10);
 
 
