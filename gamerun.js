@@ -84,20 +84,27 @@ document.addEventListener('disconnect', function(e) {
     gb.stop();
 });
 
+var menu   = document.getElementById('menu');
 var easy   = document.getElementById('easyc');
 var medium = document.getElementById('mediumc');
 var hard   = document.getElementById('hardc');
 
 easy.addEventListener('click', function() {
   server.send("game.mode", { mode: 0 });
+  menu.style.display = 'none';
+  canvas.focus();
 });
 
 medium.addEventListener('click', function() {
   server.send("game.mode", { mode: 1 });
+  menu.style.display = 'none';
+  canvas.focus();
 });
 
 hard.addEventListener('click', function() {
   server.send("game.mode", { mode: 2 });
+  menu.style.display = 'none';
+  canvas.focus();
 });
 
 function Gameboard()
@@ -179,8 +186,14 @@ function Gameboard()
 	}
 
 	function gameOver() {
+    console.log(tile[player.y][player.x]);
+    console.log(tile[player2.y][player2.x]);
+
+    console.log(tile[player.y][player.x] == '$');
+    console.log(tile[player2.y][player2.x] == '$');
+
 		if((tile[player.y][player.x] == '$') && (tile[player2.y][player2.x] == '$')) {
-			console.log("game over.");
+			console.log("Stop command: game over.");
 			server.send("game.stop", {});
 		}
 		console.log(player.x + " " + player.y + " " + player2.x + " " + player2.y);
