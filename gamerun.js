@@ -18,7 +18,7 @@ var tile =
 ];
 
 player = {x: 0, y: 0};
-player2 = {x: 0, y: 6};
+player2 = {x: (tile.length - 1), y: (tile.length - 1)};
 offx = 0;
 offy = 0;
 dirx = 0;
@@ -71,7 +71,7 @@ var s = setInterval(function() {
 			player.x += offx / 64;
 			offx = 0;
 		}
-		if(offx % 64 !== 0 && dirx === 0) {
+		else if(dirx === 0) {
 			offx += dirpx * 4;
 		}
 	}
@@ -83,7 +83,7 @@ var s = setInterval(function() {
 			player.y += offy / 64;
 			offy = 0;
 		}
-		if(offy % 64 !== 0 && diry === 0) {
+		else if(diry === 0) {
 			offy += dirpy * 4;
 		}
 	}
@@ -98,53 +98,71 @@ var s = setInterval(function() {
 
 //Cool game design idea: since we can't interpolate the movements of the other player, have them leave a fading trail and align them to the coordinates
 
+function moveLeft(player) {
+	if((player.x > 0) && (tile[player.y][player.x - 1] != '#'))
+	{
+		drawGhost(player.x, player.y);
+		player.x--;
+	}
+}
+
+function moveRight(player) {
+	if((player.x < (tile.length - 1)) && (tile[player.y][player.x + 1] != '#'))
+	{
+		drawGhost(player.x, player.y);
+		player.x++;
+	}
+}
+
+function moveDown(player) {
+	if((player.y > 0) && (tile[player.y - 1][player.x] != '#'))
+	{
+		drawGhost(player.x, player.y);
+		player.y--;
+	}
+}
+
+function moveUp(player) {
+	if((player.y < (tile.length - 1)) && (tile[player.y + 1][player.x] != '#'))
+	{
+		drawGhost(player.x, player.y);
+		player.y++;
+	}
+}
+
 canvas.addEventListener("keydown", function(e){
-	if(offx % 64 === 0 && offy % 64 === 0 && dirx === 0 && diry === 0) { //must be aligned to the grid to enact a new movement
-		console.log("FUCK");
-		if(e.keyCode == 37){
-			dirx = -1;
-		}
-		if(e.keyCode == 39) {
-			dirx = 1;
-		}
-		if(e.keyCode == 38) {
-			diry = -1;
-		}
-		if(e.keyCode == 40) {
-			diry = 1;
-		}
+	
+	//player
+
+	if(e.keyCode == 37) {
+		moveLeft(player);
+	}
+	if(e.keyCode == 39) {
+		moveRight(player);
+	}
+	if(e.keyCode == 38) {
+		moveDown(player);
+	}
+	if(e.keyCode == 40) {
+		moveUp(player);
 	}
 	
 	
 	//player 2
-	if(e.keyCode == 65){
-		if(tile[player2.y][player2.x - 1] != '#')
-		{
-			drawGhost(player2.x, player2.y);
-			player2.x--;
-		}
+
+	if(e.keyCode == 65) {
+		moveLeft(player2);
 	}
 	if(e.keyCode == 68) {
-		if(tile[player2.y][player2.x + 1] != '#')
-		{
-			drawGhost(player2.x, player2.y);
-			player2.x++;
-		}
+		moveRight(player2);
 	}
 	if(e.keyCode == 87) {
-		if(tile[player2.y - 1][player2.x] != '#')
-		{
-			drawGhost(player2.x, player2.y);
-			player2.y--;
-		}
+		moveDown(player2);
 	}
 	if(e.keyCode == 83) {
-		if(tile[player2.y + 1][player2.x] != '#')
-		{
-			drawGhost(player2.x, player2.y);
-			player2.y++;
-		}
+		moveUp(player2);
 	}
+
 });
 
 canvas.addEventListener("keyup", function(e){
