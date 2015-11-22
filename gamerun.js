@@ -21,7 +21,7 @@ wallTile.src = 'images/wall.png'
 var finTile = new Image();
 finTile.src = 'images/fin.png'
 
-var tile = 
+var tile =
 [
 ['.','.','.','#','.','.','.','.','.','.','.','#','.','.','.','.','.','.','.','#','.','.','.','.','.','.','.','#','.','.','.','.'],
 ['.','.','.','#','.','.','.','.','.','.','.','#','.','.','.','.','.','.','.','#','.','.','.','.','.','.','.','#','.','.','.','.'],
@@ -57,14 +57,14 @@ var tile =
 ['.','.','.','#','.','.','.','.','.','.','.','#','.','.','.','.','.','.','.','#','.','.','.','.','.','.','.','#','.','.','.','.']
 ];
 
-var player = {x: 0, y: 0};
-var player2 = {x: (tile.length - 1), y: (tile.length - 1)};
+var player = {x: 1, y: 1};
+var player2 = {x: (tile.length - 2), y: (tile.length - 2)};
 var offx = 0;
 var offy = 0;
 var gb;
+var gblock = false;
 
 var server = new TwoSocket("ws://localhost:8080");
-
 
 document.addEventListener("game_created", function(e) {
 	alert("Awating connection.");
@@ -74,6 +74,9 @@ document.addEventListener("game_ready", function(e) {
 	gb = new Gameboard();
 	var display = document.querySelector('#time');
 	gb.startTimer(display);
+  if (!gblock) {
+    gb = new Gameboard();
+  }
 });
 
 document.addEventListener('disconnect', function(e) {
@@ -81,34 +84,41 @@ document.addEventListener('disconnect', function(e) {
     gb.stop();
 });
 
-server.send("game.mode", {mode:0});
+var easy   = document.getElementById('easyc');
+var medium = document.getElementById('mediumc');
+var hard   = document.getElementById('hardc');
+
+easy.addEventListener('click', function() {
+  server.send("game.mode", { mode: 0 });
+});
+
+medium.addEventListener('click', function() {
+  server.send("game.mode", { mode: 1 });
+});
+
+hard.addEventListener('click', function() {
+  server.send("game.mode", { mode: 2 });
+});
 
 function Gameboard()
 {
+  console.log('creating gameboard');
+  gblock = true;
 	var gb = this;
 	var s = setInterval(function() {
-		
+
 		ctx.fillStyle = "#0067db";
 		ctx.fillRect(0,0,canvas.width,canvas.height);
 
-		for(i = player.y - 5; i < player.y + 5; i++)
+    var lower_y = player.y - 5 < 0 ? 0 : player.y - 5;
+    var upper_y = player.y + 5 > tile.length ? tile.length - 1 : player.y + 5;
+    var lower_x = player.x - 5 < 0 ? 0 : player.x - 5;
+    var upper_x = player.x + 5 > tile[0].length ? tile[0].length - 1 : player.x + 5;
+
+		for(i = lower_y; i < upper_y; i++)
 		{
-			if(i < 0) {
-				i = 0;
-			}
-			else if(i >= tile.length) {
-				i = (tile.length - 1);
-			}
-
-			for(j = player.x - 5; j < player.x + 5; j++)
+			for(j = lower_x; j < upper_x; j++)
 			{
-				if(j < 0) {
-					j = 0;
-				}
-				else if(j >= tile[i].length) {
-					j = (tile.length - 1);
-				}
-
 				if(tile[i][j] == '.') {
 					ctx.drawImage(pathTile, (((canvas.width/2) - player.x*128 + j*128)- 64), ((canvas.height/2) - player.y*128 + i*128 - 64), 128, 128);
 				}
@@ -153,7 +163,7 @@ function Gameboard()
 	function moveDown(player) {
 		if((player.y > 0) && (tile[player.y - 1][player.x] != '#'))
 		{
-			player.y--;
+			player.y--
 			server.send("game.coordinates", player);
 			gameOver();
 		}
@@ -162,7 +172,7 @@ function Gameboard()
 	function moveUp(player) {
 		if((player.y < (tile.length - 1)) && (tile[player.y + 1][player.x] != '#'))
 		{
-			player.y++;
+			player.y++
 			server.send("game.coordinates", player);
 			gameOver();
 		}
@@ -184,7 +194,7 @@ function Gameboard()
 	});
 
 	canvas.addEventListener("keydown", function(e){
-		
+
 		//player
 
 		if(e.keyCode == 37) {
@@ -199,28 +209,12 @@ function Gameboard()
 		if(e.keyCode == 40) {
 			moveUp(player);
 		}
-		
-		
-		/*player 2
-
-		if(e.keyCode == 65) {
-			moveLeft(player2);
-		}
-		if(e.keyCode == 68) {
-			moveRight(player2);
-		}
-		if(e.keyCode == 87) {
-			moveDown(player2);
-		}
-		if(e.keyCode == 83) {
-			moveUp(player2);
-		}
-		*/
 
 
 	});
 
 	this.stop = function() {
+    gblock = false;
 		clearInterval(s);
 	}
 
