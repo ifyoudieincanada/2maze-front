@@ -190,6 +190,7 @@ function Gameboard()
       player = { x: 1, y: 1 };
       player2 = { x: 1, y: 1 };
 
+      server.clear();
 			server.send("game.stop", {});
       gb.stop();
       menu.style.display = 'block';

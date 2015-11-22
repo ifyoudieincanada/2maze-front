@@ -27,7 +27,7 @@ function TwoSocket(url) {
       console.log("Error: Response not expected:");
       console.log(event.data);
     }
-  }
+  };
 
   var queueInterval = setInterval(function() {
     if (!waiting) {
@@ -41,6 +41,10 @@ function TwoSocket(url) {
       clearInterval(queueInterval);
     }
   }, 25);
+
+  this.clear = function() {
+    queue = [];
+  }
 
   this.send = function(path, data) {
     if (failed) {
