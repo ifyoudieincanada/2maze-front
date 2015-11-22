@@ -84,20 +84,27 @@ document.addEventListener('disconnect', function(e) {
     gb.stop();
 });
 
+var menu   = document.getElementById('menu');
 var easy   = document.getElementById('easyc');
 var medium = document.getElementById('mediumc');
 var hard   = document.getElementById('hardc');
 
 easy.addEventListener('click', function() {
   server.send("game.mode", { mode: 0 });
+  menu.style.display = 'none';
+  canvas.focus();
 });
 
 medium.addEventListener('click', function() {
   server.send("game.mode", { mode: 1 });
+  menu.style.display = 'none';
+  canvas.focus();
 });
 
 hard.addEventListener('click', function() {
   server.send("game.mode", { mode: 2 });
+  menu.style.display = 'none';
+  canvas.focus();
 });
 
 function Gameboard()
