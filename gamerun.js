@@ -186,6 +186,12 @@ function Gameboard()
 	}
 
 	function gameOver() {
+    console.log(tile[player.y][player.x]);
+    console.log(tile[player2.y][player2.x]);
+
+    console.log(tile[player.y][player.x] == '$');
+    console.log(tile[player2.y][player2.x] == '$');
+
 		if((tile[player.y][player.x] == '$') && (tile[player2.y][player2.x] == '$')) {
 			console.log("Stop command: game over.");
 			server.send("game.stop", {});
