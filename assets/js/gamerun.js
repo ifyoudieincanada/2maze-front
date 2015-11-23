@@ -210,7 +210,7 @@ hard.addEventListener('click', function() {
 });
 
 document.addEventListener("game_created", function(e) {
-  alert("Awating connection.");
+  alert("Awating connection."); // This should be a toast (when we get toasts)
 });
 
 document.addEventListener("game_ready", function(e) {
@@ -241,9 +241,9 @@ document.addEventListener('disconnect', function(e) {
   gb.stop();
 });
 
-playerPic.src = 'images/player-white.png';
-player2Pic.src = 'images/player-green.png';
-pathTile.src = 'images/path.png';
-wallTile.src = 'images/wall.png';
-finTile.src = 'images/fin.png';
+playerPic.src  = 'assets/img/player-white.png';
+player2Pic.src = 'assets/img/player-green.png';
+pathTile.src   = 'assets/img/path.png';
+wallTile.src   = 'assets/img/wall.png';
+finTile.src    = 'assets/img/fin.png';
 
