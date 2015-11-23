@@ -7,7 +7,7 @@ function TwoSocket(url) {
 
   var count = 0;
   var failure = setInterval(function() {
-    if (count == 5000/50) {
+    if (count === 5000/50) {
       console.log("Connection not established");
       failed = true;
       clearInterval(failure);
@@ -15,12 +15,12 @@ function TwoSocket(url) {
     count++;
   }, 50);
 
-  socket.onmessage = function (event) {
+  socket.onmessage = function(event) {
     clearInterval(failure);
-    jdata = JSON.parse(event.data);
-    if (jdata['status'] == 'connected') {
+    var jdata = JSON.parse(event.data);
+    if (jdata.status === 'connected') {
       waiting = false;
-      defaultPayload['id'] = jdata['id'];
+      defaultPayload.id = jdata.id;
     } else {
       failed = true;
       waiting = false;
@@ -32,7 +32,7 @@ function TwoSocket(url) {
   var queueInterval = setInterval(function() {
     if (!waiting) {
       if (queue.length > 0) {
-        send = queue.shift();
+        var send = queue.shift();
         send();
       }
     }
@@ -55,7 +55,7 @@ function TwoSocket(url) {
     queue.push(function() {
       waiting = true;
 
-      payload = {
+      var payload = {
         path: path,
         data: data,
         id: defaultPayload['id']
@@ -75,7 +75,7 @@ function TwoSocket(url) {
 
       socket.onmessage = function (event) {
         clearInterval(timeout);
-        jdata = JSON.parse(event.data);
+        var jdata = JSON.parse(event.data);
         var event;
         if (jdata['error']) {
           jdata['error'];
