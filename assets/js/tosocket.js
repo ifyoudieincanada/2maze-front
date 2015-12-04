@@ -81,6 +81,7 @@ function TwoSocket(url) {
           jdata['error'];
           event = new CustomEvent('error', { detail: jdata['error'] })
         } else {
+          console.log(jdata);
           event = new CustomEvent(jdata['name'], { detail: jdata['args'] });
         }
         document.dispatchEvent(event);

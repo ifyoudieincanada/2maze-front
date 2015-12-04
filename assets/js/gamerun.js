@@ -18,7 +18,7 @@ var gblock = false;
 var gtime = 0;
 var nplay = 1;
 
-var server = new TwoSocket("ws://localhost:8080");
+var server = new TwoSocket("ws://werefoxsoftware.com:8080");
 
 var menu   = document.getElementById('menu');
 var easy   = document.getElementById('easyc');
@@ -189,21 +189,21 @@ function Gameboard() {
 //left = 37, right = 39, up = 38, down = 40
 
 easy.addEventListener('click', function() {
-  server.send("game.mode", { mode: 0 });
+  server.send("game.mode", { mode: 'easy' });
   gtime = 150;
   menu.style.display = 'none';
   canvas.focus();
 });
 
 medium.addEventListener('click', function() {
-  server.send("game.mode", { mode: 1 });
+  server.send("game.mode", { mode: 'medium' });
   gtime = 210;
   menu.style.display = 'none';
   canvas.focus();
 });
 
 hard.addEventListener('click', function() {
-  server.send("game.mode", { mode: 2 });
+  server.send("game.mode", { mode: 'hard' });
   gtime = 240;
   menu.style.display = 'none';
   canvas.focus();
